@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomePage1 extends StatefulWidget {
+  HomePage1({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePage1State createState() => new _MyHomePage1State();
 }
 
 class TodoItem {
@@ -34,7 +34,8 @@ class TodoList {
   }
 }
 
-class _MyHomePageState extends State<HomePage> {
+class _MyHomePage1State extends State<HomePage1> {
+
   final TodoList list = new TodoList();
   final LocalStorage storage = new LocalStorage('todo_app');
   bool initialized = false;
@@ -47,14 +48,6 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
-  _addItem(String title) {
-    setState(() {
-      final item = new TodoItem(title: title, done: false);
-      list.items.add(item);
-      _saveToStorage();
-    });
-  }
-
   _saveToStorage() {
     storage.setItem('todos', list.toJSONEncodable());
   }
@@ -63,10 +56,11 @@ class _MyHomePageState extends State<HomePage> {
     await storage.clear();
 
     setState(() {
-      list.items = storage.getItem('todos') ?? [];
+      // list.items = storage.getItem('todos') ?? [];
+      list.items.removeWhere((element) => element.done==true);
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -154,7 +148,11 @@ class _MyHomePageState extends State<HomePage> {
   }
 
   void _save() {
-    _addItem(controller.value.text);
+    // _addItem(controller.value.text);
+    setState(() {
+      storage.setItem('todos', list.toJSONEncodable());
+      list.items.add(TodoItem(title: controller.text, done: false));
+    });
     controller.clear();
   }
 }

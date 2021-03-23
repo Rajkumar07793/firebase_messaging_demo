@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging_demo/screens/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_media_notification/flutter_media_notification.dart';
 
@@ -18,7 +19,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
 }
 
@@ -176,6 +177,9 @@ class _NextState extends State<Next> {
                   decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(color: Colors.grey))),
                   child: ListTile(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomePage1()));
+                    },
                       hoverColor: Colors.yellow,
                       tileColor: Colors.cyan[800],
                       title: Text('$item'))),
